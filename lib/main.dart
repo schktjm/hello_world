@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/page/TestPage1.dart';
+import 'package:hello_world/page/TestPage2.dart';
+import 'package:hello_world/page/TestPage3.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,10 +33,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late PageController _pageController;
+  int _selectedIndex = 0;
+
+  var _pages = [TestPage1(), TestPage2(), TestPage3()];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TestPage1(),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: _pages,
+      ),
     );
   }
 }
